@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        #cancel {
+            background-color: red;
+        }
+        #back{
+            background-color: darkblue;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        <h2>{{messages}}</h2>
+        <table>
+            <tr>
+                <th>Room name</th>
+                <th>Capacity</th>
+                <th>Date</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th></th>
+            </tr>
+            {% for i in waiting_list: %}
+            <tr>
+                <input type="hidden" name="id" value="{{i[0]}}">
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td>
+                <td>{{i[4]}}</td>
+                <td>{{i[5]}}</td>
+                <td>
+                    <button id="cancel" type="submit" name="click" value="cancel" style="display: inline;">
+                        Cancel
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button id="back" type="submit" name="click" value="back">
+            Back to home page
+        </button>
+    </form>
+</body>
+</html>
