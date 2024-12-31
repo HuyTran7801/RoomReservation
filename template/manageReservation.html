@@ -29,10 +29,14 @@
             </tr>
             {% for i in list: %}
             <tr>
-                <input type="hidden" name="id" value="{{ i[0] }}">
+                <!-- <input type="hidden" name="id" value="{{ i[0] }}">
                 <input type="hidden" name="user_id" value="{{ i[1] }}">
                 <input type="hidden" name="room_id" value="{{ i[2] }}">
-                <input type="hidden" name="time_id" value="{{ i[3] }}">
+                <input type="hidden" name="time_id" value="{{ i[3] }}"> -->
+                <!-- <td>{{i[0]}}</td>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td> -->
                 <td>{{i[4]}}</td>
                 <td>{{i[5]}}</td>
                 <td>{{i[6]}}</td>
@@ -41,8 +45,8 @@
                 <td>{{i[9]}}</td>
                 <td>{{i[10]}}</td>
                 <td>
-                    <button id="accept" name="click" value="accept">Accept</button>
-                    <button id="reject" name="click" value="reject">Reject</button>
+                    <button id="accept" name="click" value="accept-{{i[0]}}-{{i[1]}}-{{i[2]}}-{{i[3]}}">Accept</button>
+                    <button id="reject" name="click" value="reject-{{i[0]}}">Reject</button>
                 </td>
             </tr>
             {% endfor %}

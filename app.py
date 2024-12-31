@@ -158,19 +158,14 @@ def successful_book():
 
 @app.route('/manageReservation', methods=['GET', 'POST'])
 def manageReservation():
-    waiting_id = request.form.get('id')
-    
-    user_id = request.form.get('user_id')
-    room_id = request.form.get('room_id')
-    time_id = request.form.get('time_id')
-    
     click = request.form.get('click')
     waiting_service = WaitingService()
     waiting_list = waiting_service.show_all_waiting_list_total()
     if request.method == 'GET':
         return render_template('manageReservation.html', list=waiting_list)
     if request.method == 'POST':
-        if click == 'accept':
+        if click.startswith("accept-"):
+            _, waiting_id, user_id, room_id, time_id = click.split('-')
             # print('user id ', user_id)
             # print('room id ', room_id)
             # print('time id ', time_id)
@@ -183,8 +178,9 @@ def manageReservation():
             waiting_list_update = waiting_service.show_all_waiting_list_total()
             
             return render_template('manageReservation.html', list=waiting_list_update)
-        elif click == 'reject':
+        elif click.startswith("reject-"):
             # delete from waiting list
+            _, waiting_id = click.split('-')
             waiting_service.delete_from_waiting_list(waiting_id)
             waiting_list_update = waiting_service.show_all_waiting_list_total()
             
