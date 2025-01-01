@@ -42,11 +42,11 @@ class RoomDAO:
                             WHERE id = %s
                             """, (id,))
         self.__conn.commit()
-    def create_room(self, roomName, capacity):
+    def create_room(self, room):
         self.cursor.execute("""
                             INSERT INTO room_system.room (name, capacity)
                             VALUES (%s, %s)
-                            """, (roomName, capacity))
+                            """, (room.get_name(), room.get_capacity()))
         self.__conn.commit()
     def get_room_by_name(self, name):
         self.cursor.execute("""

@@ -6,11 +6,11 @@ class WaitingDAO:
         self.__conn = DBConnection().get_connection()
         self.cursor = self.__conn.cursor()
     
-    def add_waiting_list(self, user_id, room_id, time_id):
+    def add_waiting_list(self, booking):
         self.cursor.execute("""
                             insert into room_system.waiting_list (user_id, room_id, time_id, status)
                             values (%s, %s, %s, 'waiting')
-                            """, (user_id, room_id, time_id)) 
+                            """, (booking.get_user_id(), booking.get_room_id(), booking.get_time_id())) 
         self.__conn.commit()
         
     def delete_waiting_list(self, id):
@@ -36,12 +36,12 @@ class WaitingDAO:
                             """, (user_id,))
         return self.cursor.fetchall()
     
-    def get_waiting_list_detail(self, user_id, room_id, time_id):
+    def get_waiting_list_detail(self, booking):
         self.cursor.execute("""
                             select *
                             from room_system.waiting_list w
                             where w.user_id= %s and w.room_id = %s and w.time_id = %s
-                            """, (user_id, room_id, time_id))
+                            """, (booking.get_user_id(), booking.get_room_id(), booking.get_time_id()))
         return self.cursor.fetchone()
     
     def get_all_waiting_list_total(self):

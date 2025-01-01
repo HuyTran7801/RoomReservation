@@ -13,11 +13,11 @@ class ReservationDAO:
                             """)
         return self.cursor.fetchall()
     
-    def add_reservation(self, user_id, room_id, time_id):
+    def add_reservation(self, booking):
         self.cursor.execute("""
                             insert into room_system.reservation (user_id, room_id, time_id)
                             values (%s, %s, %s)
-                            """, (user_id, room_id, time_id))
+                            """, (booking.get_user_id(), booking.get_room_id(), booking.get_time_id()))
         self.__conn.commit()
         
     def get_over_current_date(self, date):
@@ -61,3 +61,4 @@ class ReservationDAO:
                             where re.room_id = r.id and re.user_id = u.id and re.time_id = t.id and u.id = %s
                             """, (user_id,))
         return self.cursor.fetchall()
+    

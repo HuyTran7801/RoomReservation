@@ -4,8 +4,8 @@ class WaitingService:
     def __init__(self):
         self.__waiting_dao = WaitingDAO()
         
-    def add_to_waiting_list(self, user_id, room_id, time_id):
-        self.__waiting_dao.add_waiting_list(user_id, room_id, time_id)
+    def add_to_waiting_list(self, booking):
+        self.__waiting_dao.add_waiting_list(booking)
         
     def show_all_waiting_list(self, user_id):
         return self.__waiting_dao.get_all_waiting_list(user_id)
@@ -13,8 +13,8 @@ class WaitingService:
     def delete_from_waiting_list(self, id):
         self.__waiting_dao.delete_waiting_list(id)
         
-    def check_exist_waiting_list(self, user_id, room_id, time_id):
-        check = self.__waiting_dao.get_waiting_list_detail(user_id, room_id, time_id)
+    def check_exist_waiting_list(self, booking):
+        check = self.__waiting_dao.get_waiting_list_detail(booking)
         if check is None:
             return True
         return False

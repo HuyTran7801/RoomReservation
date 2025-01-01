@@ -5,7 +5,7 @@ class DBConnection:
         self.__connection = connect(
             host="127.0.0.1",
             user="root",
-            password="admin",
+            password="password",
             database="room_system"
         )
         
