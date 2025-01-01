@@ -16,3 +16,5 @@ class TimeService:
         return self.__time_dao.add_time(date, start_time, end_time)
     def delete_time(self, time_id):
         return self.__time_dao.delete_time(time_id)
+    def find_time_id(self, date, start_time, end_time):
+        return self.__time_dao.get_time_detail(date, start_time, end_time)[0]

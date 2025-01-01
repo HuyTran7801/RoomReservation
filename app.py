@@ -277,6 +277,9 @@ def manageTime():
                 start = '15:00:00'
                 end = '16:59:00'
             day = request.form.get('day')
+            check_time = timme_service.show_time_detail(day, start, end)
+            if len(check_time) > 0:
+                return render_template('manageTime.html', times=times, error_text='This time has been created')
             timme_service.add_time(day, start, end)
             return redirect(url_for('manageTime'))
         if adminPage == 'onclick':

@@ -23,7 +23,7 @@ class TimeDAO:
         self.__conn.commit()
         
     def get_all_times(self):
-        self.cursor.execute("""select * from room_system.time""")
+        self.cursor.execute("""select * from room_system.time t order by t.day""")
         return self.cursor.fetchall()
     
     
