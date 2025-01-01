@@ -270,10 +270,11 @@ def manageTime():
                 end = '16:59:00'
             day = request.form.get('day')
             check_time = time_service.show_time_detail(day, start, end)
-            if len(check_time) > 0:
+            if check_time:
                 return render_template('manageTime.html', times=times, error_text='This time has been created')
-            time_service.add_time(day, start, end)
-            return redirect(url_for('manageTime'))
+            else:
+                time_service.add_time(day, start, end)
+                return redirect(url_for('manageTime'))
         if adminPage == 'onclick':
             return redirect(url_for('admin'))
         return redirect(url_for('manageTime'))
