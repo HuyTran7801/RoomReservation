@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+        }
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        #book, #search, #return, #waiting_list{
+            background-color: rgb(42, 165, 110); /* Green */
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="post">
+        <h1>Available Time for {{name}}</h1>
+        <h2>Capacity: {{capacity}}</h2>
+        <input type="date" name="date" value="{{day}}" required>
+        <br>
+        <br>
+        <button id="search" type="submit" name="click" value="date">
+            Search
+        </button>
+        <table>
+            <tr>
+                <th>Start time</th>
+                <th>End time</th>
+            </tr>
+            {% for time in available_times: %}
+                <tr>
+                    <td>
+                        <!-- <input type="hidden" name="start_time" value="{{ time[0] }}"> -->
+                        {{time[0]}}
+                    </td>
+                    <td>
+                        <!-- <input type="hidden" name="end_time" value="{{time[1]}}"> -->
+                        {{time[1]}}
+                    </td>
+                    <td>
+                        <button id="book" type="submit" name="click" value="book-{{ time[0] }}-{{ time[1] }}" style="display: inline;">
+                            Book
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        <div>{{response}}</div>
+        <button id="return" type="submit" name="click" value="return" formnovalidate>
+            Choose another room
+        </button>
+        <button id="waiting_list" type="submit" name="click" value="waiting list">
+            Go to waiting list
+        </button>
+    </form>
+</body>
+</html>

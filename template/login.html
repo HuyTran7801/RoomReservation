@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="login">
+        <form action="" method="post">
+            <input type="hidden" name="id">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            <br>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            <br>
+            <!-- <input type="submit" name="choice" value="Log in"> -->
+            <button type="submit" name="choice" value="log in">Log in</button>
+            <button type="submit" name="choice" value="sign up">Back to Sign up</button>
+            <br>
+            <p>{{error_text}}</p>
+        </form>
+    </div>
+</body>
+</html>
