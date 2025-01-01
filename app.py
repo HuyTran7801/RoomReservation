@@ -247,7 +247,6 @@ def manageRoom():
 def manageTime():
     timme_service = TimeService()
     times = timme_service.show_all_times()
-    print(len(times))
     if request.method == 'GET':
         return render_template('manageTime.html', times=times)
     if request.method == 'POST':

@@ -32,7 +32,7 @@ class WaitingDAO:
         self.cursor.execute("""
                             select w.id, r.name, r.capacity, t.day, t.start, t.end
                             from room_system.waiting_list w, room_system.room r, room_system.user u, room_system.time t
-                            where u.id = w.user_id and r.id = w.room_id and t.id = w.time_id and u.id=%s
+                            where u.id = w.user_id and r.id = w.room_id and t.id = w.time_id and u.id=%s and w.status = 'waiting'
                             """, (user_id,))
         return self.cursor.fetchall()
     
