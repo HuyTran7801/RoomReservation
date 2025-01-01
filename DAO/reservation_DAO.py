@@ -53,3 +53,10 @@ class ReservationDAO:
                             where re.time_id = (select t.id from room_system.time t where t.day < now()) 
                             """)
         self.__conn.commit()
+    def get_user_reservations(self, user_id):
+        self.cursor.execute("""
+                            select re.id, r.name, r.capacity, t.day, t.start, t.end
+                            from room_system.reservation re, room_system.room r, room_system.user u, room_system.time t
+                            where re.room_id = r.id and re.user_id = u.id and re.time_id = t.id and u.id = %s
+                            """, (user_id,))
+        return self.cursor.fetchall()

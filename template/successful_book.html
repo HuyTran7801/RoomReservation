@@ -50,6 +50,52 @@
             </tr>
             {% endfor %}
         </table>
+
+        <h2>List of accepted bookings</h2>
+        <table>
+            <tr>
+                <th>Room name</th>
+                <th>Capacity</th>
+                <th>Date</th>
+                <th>Start time</th>
+                <th>End time</th>
+                <th></th>
+            </tr>
+            {% for i in booking_accept: %}
+            <tr>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td>
+                <td>{{i[4]}}</td>
+                <td>{{i[5]}}</td>
+                <td>
+                    <button id="cancel" type="submit" name="click" value="delete-{{i[0]}}" style="display: inline;">
+                        Cancel
+                    </button>
+            </tr>
+            {% endfor %}
+        </table>
+        <h2>List of denied bookings</h2>
+        <table>
+            <tr>
+                <th>Room name</th>
+                <th>Capacity</th>
+                <th>Date</th>
+                <th>Start time</th>
+                <th>End time</th>
+            </tr>
+            {% for i in booking_deny: %}
+            <tr>
+                <td>{{i[1]}}</td>
+                <td>{{i[2]}}</td>
+                <td>{{i[3]}}</td>
+                <td>{{i[4]}}</td>
+                <td>{{i[5]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        
+        
         <button id="back" type="submit" name="click" value="back">
             Back to home page
         </button>

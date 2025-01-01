@@ -11,3 +11,5 @@ class ReservationService:
         return self.__reservation_dao.delete_late_reservations()
     def deleteReservation(self, id):
         return self.__reservation_dao.delete_reservation(id)
+    def get_user_reservations(self, user_id):
+        return self.__reservation_dao.get_user_reservations(user_id)

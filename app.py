@@ -113,24 +113,16 @@ def room_info():
         # Booking here
         # update time and insert into reservation
         if click.startswith("book-"):
-            # print('go')
             available_times = search_room_service.show_available_times(room_id, date)
             
             _, start_time, end_time = click.split('-')
-            # session['start_time'] = start_time
-            # session['end_time'] = end_time
             time_service = TimeService()
             response = time_service.show_time_detail(date, start_time, end_time)
-            # print('ID ',response[0])
             session['time_id'] = response[0]
             
             # Add new waiting list
             room_id = session.get('room_id')
             time_id = session.get('time_id')
-            # print('Time ID ', time_id)
-            # print('Date ', date)
-            # print('start ', start_time)
-            # print('end ', end_time)
             waiting_service = WaitingService()
             if waiting_service.check_exist_waiting_list(user_id, room_id, time_id):
                 waiting_service.add_to_waiting_list(user_id, room_id, time_id)
@@ -141,14 +133,11 @@ def room_info():
             session['user_id'] = user_id
             return redirect(url_for('home'))
         elif click == 'date':
-            # print('Date ', date)
             available_times = search_room_service.show_available_times(room_id, date)
-            # print(type(date))
             session['user_id'] = user_id
             return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times)
         elif click == 'waiting list':
             session['user_id'] = user_id
-            print('ID ', user_id)
             return redirect(url_for('successful_book'))
     return render_template('room_info.html')
 
@@ -158,17 +147,24 @@ def successful_book():
     waiting_service = WaitingService()
     waiting_list = waiting_service.show_all_waiting_list(user_id)
     click = request.form.get('click')
+    reservation_service = ReservationService()
+    booking_accept = reservation_service.get_user_reservations(user_id)
+    booking_deny = waiting_service.show_booking_deny_list(user_id)
     
     if request.method == 'GET':
-        return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=waiting_list)
+        return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=waiting_list,
+                               booking_accept=booking_accept,booking_deny=booking_deny)
     if request.method == 'POST':
         if click.startswith("cancel-"):
-            # print('ID wait ', waiting_id)
             session['user_id'] = user_id
             _, waiting_id = click.split('-')
             waiting_service.delete_from_waiting_list(waiting_id)
-            waiting_list_update = waiting_service.show_all_waiting_list(user_id)
-            return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=waiting_list_update)
+            return redirect(url_for('successful_book'))
+        elif click.startswith("delete-"):
+            session['user_id'] = user_id
+            _, reservation_id = click.split('-')
+            reservation_service.deleteReservation(reservation_id)
+            return redirect(url_for('successful_book'))
         elif click == 'back':
             session['user_id'] = user_id
             print('ID user ', user_id)
@@ -182,26 +178,21 @@ def manageReservation():
     waiting_list = waiting_service.show_all_waiting_list_total()
     reservation_service = ReservationService()
     reservations = reservation_service.get_all_reservations()
+    rejectReservation = waiting_service.get_all_deny_list()
     if request.method == 'GET':
-        return render_template('manageReservation.html', list=waiting_list, bookings=reservations)
+        return render_template('manageReservation.html', list=waiting_list, bookings=reservations, rejectReservation=rejectReservation)
     if request.method == 'POST':
         if click.startswith("accept-"):
             _, waiting_id, user_id, room_id, time_id = click.split('-')
-            # print('user id ', user_id)
-            # print('room id ', room_id)
-            # print('time id ', time_id)
-            # Add to reservation, delete from waiting list
             book_service = BookService()
-            book_service.add_new_reservation(user_id, room_id, time_id)
-            
+            book_service.add_new_reservation(user_id, room_id, time_id)  
             waiting_service.delete_same_from_waiting_list(room_id, time_id)
             waiting_service.delete_from_waiting_list(waiting_id)
             return redirect(url_for('manageReservation'))
         elif click.startswith("reject-"):
             # delete from waiting list
             _, waiting_id = click.split('-')
-            waiting_service.delete_from_waiting_list(waiting_id)
-            waiting_list_update = waiting_service.show_all_waiting_list_total()
+            waiting_service.reject_waiting_list(waiting_id)
             return redirect(url_for('manageReservation'))
         elif click.startswith("delete-"):
             _, reservation_id = click.split('-')

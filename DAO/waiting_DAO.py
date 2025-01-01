@@ -8,8 +8,8 @@ class WaitingDAO:
     
     def add_waiting_list(self, user_id, room_id, time_id):
         self.cursor.execute("""
-                            insert into room_system.waiting_list (user_id, room_id, time_id)
-                            values (%s, %s, %s)
+                            insert into room_system.waiting_list (user_id, room_id, time_id, status)
+                            values (%s, %s, %s, 'waiting')
                             """, (user_id, room_id, time_id)) 
         self.__conn.commit()
         
@@ -48,6 +48,27 @@ class WaitingDAO:
         self.cursor.execute("""
                             select w.id, w.user_id, w.room_id, w.time_id, u.name, u.mail, r.name, r.capacity, t.day, t.start, t.end
                             from room_system.waiting_list w, room_system.room r, room_system.user u, room_system.time t
-                            where w.room_id = r.id and w.user_id = u.id and w.time_id = t.id
+                            where w.room_id = r.id and w.user_id = u.id and w.time_id = t.id and w.status = 'waiting'
+                            """)
+        return self.cursor.fetchall()
+    def get_booking_deny_list(self, user_id):
+        self.cursor.execute("""
+                            select w.id, r.name, r.capacity, t.day, t.start, t.end
+                            from room_system.waiting_list w, room_system.room r, room_system.user u, room_system.time t
+                            where u.id = %s and r.id = w.room_id and t.id = w.time_id and u.id=1 and w.Status ='reject'
+                            """, (user_id,))
+        return self.cursor.fetchall()
+    def reject_waiting_list(self, id):
+        self.cursor.execute("""
+                            update room_system.waiting_list w
+                            set w.status = 'reject'
+                            where w.id=%s
+                            """,(id,))
+        self.__conn.commit()
+    def get_all_deny_list(self):
+        self.cursor.execute("""
+                            select w.id, u.name, u.mail, r.name, r.capacity, t.day, t.start, t.end
+                            from room_system.waiting_list w, room_system.room r, room_system.user u, room_system.time t
+                            where r.id = w.room_id and t.id = w.time_id and w.status = 'reject'
                             """)
         return self.cursor.fetchall()
