@@ -49,8 +49,9 @@ class ReservationDAO:
         return self.cursor.fetchall()
     def delete_late_reservations(self):
         self.cursor.execute("""
-                            delete from room_system.reservation re
-                            where re.time_id = (select t.id from room_system.time t where t.day < now()) 
+                            delete re
+                            FROM room_system.reservation re 
+                            JOIN room_system.time t ON re.time_id = t.id and t.day <now();
                             """)
         self.__conn.commit()
     def get_user_reservations(self, user_id):

@@ -108,7 +108,7 @@ def room_info():
     # print('CLICK ', click)
     if request.method == 'GET':
         return render_template('room_info.html', day=date, name=name, capacity=capacity)
-        return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times)
+        # return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times)
     if request.method == 'POST':
         # Booking here
         # update time and insert into reservation
@@ -124,6 +124,7 @@ def room_info():
             room_id = session.get('room_id')
             time_id = session.get('time_id')
             waiting_service = WaitingService()
+            waiting_service.delete_waiting_list_reject('reject')
             if waiting_service.check_exist_waiting_list(user_id, room_id, time_id):
                 waiting_service.add_to_waiting_list(user_id, room_id, time_id)
                 return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times, response='Booked successful!')
@@ -200,6 +201,10 @@ def manageReservation():
             return redirect(url_for('manageReservation'))
         elif click == 'deleteLateBookings':
             reservation_service.deleteLateReservations()
+            return redirect(url_for('manageReservation'))
+        elif click.startswith("deny-"):
+            _, deny_id = click.split('-')
+            waiting_service.delete_from_waiting_list(deny_id)
             return redirect(url_for('manageReservation'))
         elif click == 'adminPage':
             return redirect(url_for('admin'))

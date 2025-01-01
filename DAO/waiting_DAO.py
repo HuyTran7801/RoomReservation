@@ -69,6 +69,12 @@ class WaitingDAO:
         self.cursor.execute("""
                             select w.id, u.name, u.mail, r.name, r.capacity, t.day, t.start, t.end
                             from room_system.waiting_list w, room_system.room r, room_system.user u, room_system.time t
-                            where r.id = w.room_id and t.id = w.time_id and w.status = 'reject'
+                            where r.id = w.room_id and t.id = w.time_id and w.status = 'reject' and u.id = w.user_id
                             """)
         return self.cursor.fetchall()
+    def delete_status_reject(self, status):
+        self.cursor.execute("""
+                            delete from room_system.waiting_list w
+                            where w.status=%s
+                            """,(status,))
+        self.__conn.commit()

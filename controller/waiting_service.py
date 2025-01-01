@@ -30,4 +30,5 @@ class WaitingService:
         self.__waiting_dao.reject_waiting_list(id)
     def get_all_deny_list(self):
         return self.__waiting_dao.get_all_deny_list()
-    
+    def delete_waiting_list_reject(self, status):
+        self.__waiting_dao.delete_status_reject(status)
