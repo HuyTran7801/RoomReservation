@@ -49,11 +49,14 @@
             <form action="" method="POST" >
                 <h2>Create new Time</h2>
                 <div> </div>
-                <label for="start">Start</label>
-                <input type="time" name="start" required>
+                <label for="Time">Time frame</label>
 
-                <label for="end">End</label>
-                <input type="time" name="end" required>
+                <select name="timeRoom">
+                    <option value=slot1> Form 8:00 am to 09:59 am </option>
+                    <option value=slot2> Form 10:00 am to 11:59 am </option>
+                    <option value=slot3> Form 1:00 pm to 2:59 pm </option>
+                    <option value=slot4> Form 3:00 pm to 04:59 pm </option>
+                </select>
 
                 <label for="day">Day</label>
                 <input type="date" name="day" required>

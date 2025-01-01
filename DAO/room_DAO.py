@@ -22,16 +22,16 @@ class RoomDAO:
     def get_available_times(self, id, date):
         self.cursor.execute("""
                             SELECT t.start, t.end
-FROM room_system.time t
-WHERE t.day = %s
-  AND t.id NOT IN (
-    SELECT re.time_id
-    FROM room_system.reservation re
-    JOIN room_system.room r ON r.id = re.room_id
-    WHERE r.id = %s
-      AND re.time_id IS NOT NULL
-      AND re.room_id = r.id
-  );
+                            FROM room_system.time t
+                            WHERE t.day = %s
+                            AND t.id NOT IN (
+                                SELECT re.time_id
+                                FROM room_system.reservation re
+                                JOIN room_system.room r ON r.id = re.room_id
+                                WHERE r.id = %s
+                                AND re.time_id IS NOT NULL
+                                AND re.room_id = r.id
+                            );
                             """, (date,id))
         return self.cursor.fetchall()
     
@@ -48,3 +48,9 @@ WHERE t.day = %s
                             VALUES (%s, %s)
                             """, (roomName, capacity))
         self.__conn.commit()
+    def get_room_by_name(self, name):
+        self.cursor.execute("""
+                            SELECT * FROM room_system.room
+                            WHERE name = %s
+                            """, (name,))
+        return self.cursor.fetchall()

@@ -40,4 +40,16 @@ class ReservationDAO:
                             where re.id = %s
                             """, (reservation_id,))
         self.__conn.commit()
-        
+    def get_all_reservations_detail(self):
+        self.cursor.execute("""
+                            select re.id, re.user_id, re.room_id, re.time_id, u.name, u.mail, r.name, r.capacity, t.day, t.start, t.end
+                            from room_system.reservation re, room_system.room r, room_system.user u, room_system.time t
+                            where re.room_id = r.id and re.user_id = u.id and re.time_id = t.id
+                            """)
+        return self.cursor.fetchall()
+    def delete_late_reservations(self):
+        self.cursor.execute("""
+                            delete from room_system.reservation re
+                            where re.time_id = (select t.id from room_system.time t where t.day < now()) 
+                            """)
+        self.__conn.commit()

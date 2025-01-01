@@ -4,6 +4,7 @@ from controller.search_room_service import *
 from controller.time_service import *
 from controller.waiting_service import *
 from controller.book_service import *
+from controller.reservation_service import *
 from model.user import *
 import datetime
 
@@ -161,8 +162,10 @@ def manageReservation():
     click = request.form.get('click')
     waiting_service = WaitingService()
     waiting_list = waiting_service.show_all_waiting_list_total()
+    reservation_service = ReservationService()
+    reservations = reservation_service.get_all_reservations()
     if request.method == 'GET':
-        return render_template('manageReservation.html', list=waiting_list)
+        return render_template('manageReservation.html', list=waiting_list, bookings=reservations)
     if request.method == 'POST':
         if click.startswith("accept-"):
             _, waiting_id, user_id, room_id, time_id = click.split('-')
@@ -185,6 +188,15 @@ def manageReservation():
             waiting_list_update = waiting_service.show_all_waiting_list_total()
             
             return render_template('manageReservation.html', list=waiting_list_update)
+        elif click.startswith("delete-"):
+            _, reservation_id = click.split('-')
+            reservation_service.deleteReservation(reservation_id)
+            return redirect(url_for('manageReservation'))
+        elif click == 'deleteLateBookings':
+            reservation_service.deleteLateReservations()
+            return redirect(url_for('manageReservation'))
+        elif click == 'adminPage':
+            return redirect(url_for('admin'))
     return render_template('manageReservation.html')
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -203,8 +215,6 @@ def admin():
 def manageRoom():
     search_room_service = SearchRoomService()
     rooms = search_room_service.search_all_rooms()
-    # current =  '2025-12-31 14:00:00'
-    # current_time = datetime.datetime.now().replace(microsecond=0, second=0)
 
     if request.method == 'GET':
         return render_template('manageRoom.html', rooms=rooms)
@@ -216,6 +226,9 @@ def manageRoom():
         if create == 'onclick':
             capacity = request.form.get('capacity')
             roomName = request.form.get('roomName')
+            checkRoom = search_room_service.search_room_by_name(roomName)
+            if len(checkRoom) > 0:
+                return render_template('manageRoom.html', rooms=rooms, error_text='This room has been created')
             search_room_service.create_room(roomName, capacity)
             return redirect(url_for('manageRoom'))
         if adminPage == 'onclick':
@@ -228,8 +241,6 @@ def manageRoom():
 def manageTime():
     timme_service = TimeService()
     times = timme_service.show_all_times()
-    # current =  '2025-12-31 14:00:00'
-    # current_time = datetime.datetime.now().replace(microsecond=0, second=0)
     print(len(times))
     if request.method == 'GET':
         return render_template('manageTime.html', times=times)
@@ -239,8 +250,19 @@ def manageTime():
         create = request.form.get('create')
         adminPage = request.form.get('adminPage')
         if create == 'onclick':
-            start = request.form.get('start')
-            end = request.form.get('end')
+            timeRoom = request.form.get('timeRoom')
+            if timeRoom == 'slot1':
+                start = '08:00:00'
+                end = '09:59:00'
+            elif timeRoom == 'slot2':
+                start = '10:00:00'
+                end = '11:59:00'
+            elif timeRoom == 'slot3':
+                start = '13:00:00'
+                end = '14:59:00'
+            elif timeRoom == 'slot4':
+                start = '15:00:00'
+                end = '16:59:00'
             day = request.form.get('day')
             timme_service.add_time(day, start, end)
             return redirect(url_for('manageTime'))

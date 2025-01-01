@@ -25,14 +25,12 @@
         <form action="" method="post">
             <table>
                 <tr>
-                    <th>ID</th>
                     <th>Capacity</th>
                     <th>Room Name</th>
                     <th></th>
                 </tr>
                 {% for room in rooms: %}
                 <tr>
-                    <td>{{ room[0]}}</td>
                     <td >{{room[1]}}</td>
                     <td>{{room[2]}}</td>
                     <td>
@@ -64,6 +62,7 @@
             <form action="" method="post">
                 <button type="submit" name ="adminPage" value="onclick">Comeback to admin home page</button>
             </form>
+            <p>{{error_text}}</p>
         </div>
 
         
