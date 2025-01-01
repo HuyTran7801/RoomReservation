@@ -142,13 +142,13 @@ def successful_book():
     waiting_service = WaitingService()
     waiting_list = waiting_service.show_all_waiting_list(user_id)
     click = request.form.get('click')
-    waiting_id = request.form.get('id')
     
     if request.method == 'GET':
         return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=waiting_list)
     if request.method == 'POST':
-        if click == 'cancel':
+        if click.startswith("cancel-"):
             # print('ID wait ', waiting_id)
+            _, waiting_id = click.split('-')
             waiting_service.delete_from_waiting_list(waiting_id)
             waiting_list_update = waiting_service.show_all_waiting_list(user_id)
             return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=waiting_list_update)
