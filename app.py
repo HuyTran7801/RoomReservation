@@ -55,10 +55,12 @@ def sign_up():
         password = request.form.get('password')
         phone = request.form.get('phone')
         login_service = LoginService()
-        if login_service.validate_sign_up(username, mail, password, phone):
-            return redirect(url_for('successful_sign_up'))
+        choice = request.form.get('choice')
+        if choice == 'sign up':
+            if login_service.validate_sign_up(username, mail, password, phone):
+                return redirect(url_for('successful_sign_up'))
         else:
-            return render_template('signup.html', error_text='This mail or phone number has been used')
+            return redirect(url_for('login'))
     return render_template('signup.html')
 
 @app.route('/successful_sign_up', methods=['GET', 'POST'])
