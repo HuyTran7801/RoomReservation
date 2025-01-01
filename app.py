@@ -245,14 +245,13 @@ def manageRoom():
 
 @app.route('/manageTime', methods=['GET', 'POST'])
 def manageTime():
-    timme_service = TimeService()
-    times = timme_service.show_all_times()
-    print(len(times))
+    time_service = TimeService()
+    times = time_service.show_all_times()
     if request.method == 'GET':
         return render_template('manageTime.html', times=times)
     if request.method == 'POST':
         time_id = request.form.get('delete')
-        timme_service.delete_time(time_id)
+        time_service.delete_time(time_id)
         create = request.form.get('create')
         adminPage = request.form.get('adminPage')
         if create == 'onclick':
@@ -270,10 +269,10 @@ def manageTime():
                 start = '15:00:00'
                 end = '16:59:00'
             day = request.form.get('day')
-            check_time = timme_service.show_time_detail(day, start, end)
+            check_time = time_service.show_time_detail(day, start, end)
             if len(check_time) > 0:
                 return render_template('manageTime.html', times=times, error_text='This time has been created')
-            timme_service.add_time(day, start, end)
+            time_service.add_time(day, start, end)
             return redirect(url_for('manageTime'))
         if adminPage == 'onclick':
             return redirect(url_for('admin'))
