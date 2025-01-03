@@ -3,42 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Admin Page</title>
   </head>
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <form
-      action=""
-      method="post"
-      class="bg-white shadow-md rounded-lg p-6 space-y-4 w-full max-w-md border border-gray-300"
-    >
-      <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">
-        Classroom Reservation
+  <body
+    class="bg-white text-black min-h-screen flex items-center justify-center"
+  >
+    <div class="bg-white p-8 rounded-lg shadow-xl w-full sm:w-96">
+      <h1 class="text-2xl font-semibold text-black text-center mb-6">
+        Admin Panel
       </h1>
-      <button
-        type="submit"
-        name="choice"
-        value="manageRoom"
-        class="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-700 transition duration-300"
-      >
-        Manage Room
-      </button>
-      <button
-        type="submit"
-        name="choice"
-        value="manageReservation"
-        class="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-700 transition duration-300"
-      >
-        Manage Reservation
-      </button>
-      <button
-        type="submit"
-        name="choice"
-        value="manageTime"
-        class="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-700 transition duration-300"
-      >
-        Manage Time
-      </button>
-    </form>
+      <form action="" method="post" class="flex flex-col gap-6">
+        <button
+          type="submit"
+          name="choice"
+          value="manageRoom"
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all transform hover:scale-105"
+        >
+          Manage Room
+        </button>
+
+        <button
+          type="submit"
+          name="choice"
+          value="manageReservation"
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all transform hover:scale-105"
+        >
+          Manage Reservation
+        </button>
+
+        <button
+          type="submit"
+          name="choice"
+          value="manageTime"
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all transform hover:scale-105"
+        >
+          Manage Time
+        </button>
+      </form>
+    </div>
   </body>
 </html>

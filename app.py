@@ -6,6 +6,15 @@ from controller.waiting_service import *
 from controller.book_service import *
 from controller.reservation_service import *
 from model.user import *
+from model.account import *
+from model.waitingList import *
+from model.room import *
+from model.time import *
+from model.waiting_list import *
+from model.reservation import *
+from model.deny_list import *
+from model.reservationDetail import *
+from model.reservationRejectDetail import *
 import datetime
 
 app = Flask(__name__, template_folder='template')
@@ -33,13 +42,14 @@ def login():
         choice = request.form.get('choice')
         username = request.form.get('username')
         password = request.form.get('password')
+        account = Account(username, password)
         if choice == 'log in':
             login_service = LoginService()
-            if login_service.validate_login(username, password):
-                session['username'] = username
-                user_info = login_service.show_user_detail(username, password)
+            if login_service.validate_login(account):
+                session['username'] = account.get_name()
+                user_info = login_service.show_user_detail(account)
                 session['user_id'] = user_info[0]
-                print('ID ', user_info[0])
+                # print('Info ', user_info)
                 return redirect(url_for('home'))
             else:
                 return render_template('login.html', error_text='Invalid username or password')
@@ -54,11 +64,14 @@ def sign_up():
         mail = request.form.get('mail')
         password = request.form.get('password')
         phone = request.form.get('phone')
+        user = User(username, mail, password, phone)
         login_service = LoginService()
         choice = request.form.get('choice')
         if choice == 'sign up':
-            if login_service.validate_sign_up(username, mail, password, phone):
+            if login_service.validate_sign_up(user):
                 return redirect(url_for('successful_sign_up'))
+            else:
+                return render_template('signup.html', error_text='Email or Phone Number already exists')
         else:
             return redirect(url_for('login'))
     return render_template('signup.html')
@@ -75,10 +88,13 @@ def home():
     search_room_service = SearchRoomService()
     rooms = search_room_service.search_all_rooms()
     user_id = session.get('user_id')
-    print(user_id)
+   
+    room_list = []
+    for i in rooms:
+        room_list.append(Room(i[0], i[1], i[2]))
     click = request.form.get('click')
     if request.method == 'GET':
-        return render_template('home.html', welcome=username, rooms=rooms)
+        return render_template('home.html', welcome=username, rooms=room_list)
     if request.method == 'POST':
         if click == 'search room':
             room_id = request.form.get('room')
@@ -96,37 +112,41 @@ def room_info():
     room_id = session.get('room_id')
     search_room_service = SearchRoomService()
     room_detail = search_room_service.search_room_detail(room_id)
+   
     name = room_detail[1]
     capacity = room_detail[0]
+    room = Room(room_id, capacity, name)
     user_id = session.get('user_id')
     if request.method == 'GET':
-        return render_template('room_info.html', day=date, name=name, capacity=capacity)
+        return render_template('room_info.html', day=date, name=room.get_name(), capacity=room.get_capacity())
     if request.method == 'POST':
         if click.startswith("book-"):
             available_times = search_room_service.show_available_times(room_id, date)
-            
             _, start_time, end_time = click.split('-')
             time_service = TimeService()
             response = time_service.show_time_detail(date, start_time, end_time)
             session['time_id'] = response[0]
             
+            
+            time = Time(response[0], start_time, end_time, date)
             # Add new waiting list
             room_id = session.get('room_id')
             time_id = session.get('time_id')
+            booking = WaitingList(user_id, room.get_id(), time_id, 'waiting')
             waiting_service = WaitingService()
             waiting_service.delete_waiting_list_reject('reject')
-            if waiting_service.check_exist_waiting_list(user_id, room_id, time_id):
-                waiting_service.add_to_waiting_list(user_id, room_id, time_id)
-                return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times, response='Booked successful!')
+            if waiting_service.check_exist_waiting_list(booking):
+                waiting_service.add_to_waiting_list(booking)
+                return render_template('room_info.html', day=time.get_day(), name=room.get_name(), capacity=room.get_capacity(), available_times=available_times, response='Booked successful!')
             
-            return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times, response='Already booked!')
+            return render_template('room_info.html', day=time.get_day(), name=room.get_name(), capacity=room.get_capacity(), available_times=available_times, response='Already booked!')
         elif click == 'return':
             session['user_id'] = user_id
             return redirect(url_for('home'))
         elif click == 'date':
             available_times = search_room_service.show_available_times(room_id, date)
             session['user_id'] = user_id
-            return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times)
+            return render_template('room_info.html', day=date, name=room.get_name(), capacity=room.get_capacity(), available_times=available_times)
         elif click == 'waiting list':
             session['user_id'] = user_id
             return redirect(url_for('successful_book'))
@@ -137,14 +157,25 @@ def successful_book():
     user_id = session.get('user_id')
     waiting_service = WaitingService()
     waiting_list = waiting_service.show_all_waiting_list(user_id)
+  
     click = request.form.get('click')
     reservation_service = ReservationService()
     booking_accept = reservation_service.get_user_reservations(user_id)
     booking_deny = waiting_service.show_booking_deny_list(user_id)
+
+    list_waiting = []
+    for i in waiting_list:
+        list_waiting.append(ListWaiting(i[0], i[1], i[2], i[3], i[4], i[5]))
+    list_book = []
+    for i in booking_accept:
+        list_book.append(Reservation(i[0], i[1], i[2], i[3], i[4], i[5]))
+    list_deny = []
+    for i in booking_deny:
+        list_deny.append(ListDeny(i[0], i[1], i[2], i[3], i[4], i[5]))
     
     if request.method == 'GET':
-        return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=waiting_list,
-                               booking_accept=booking_accept,booking_deny=booking_deny)
+        return render_template('successful_book.html', messages='Waiting list to be accepted', waiting_list=list_waiting,
+                               booking_accept=list_book,booking_deny=list_deny)
     if request.method == 'POST':
         if click.startswith("cancel-"):
             session['user_id'] = user_id
@@ -170,15 +201,31 @@ def manageReservation():
     reservation_service = ReservationService()
     reservations = reservation_service.get_all_reservations()
     rejectReservation = waiting_service.get_all_deny_list()
+    reservation_wait = []
+    reservation_accept = []
+    reservation_reject = []
+    for i in waiting_list:
+        reservation_wait.append(ReservationDetail(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10]))
+        
+    for i in reservations:
+        reservation_accept.append(ReservationDetail(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], i[10]))
+        
+    for i in rejectReservation:
+        reservation_reject.append(ReservationRejectDetail(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7]))
+    
     if request.method == 'GET':
-        return render_template('manageReservation.html', list=waiting_list, bookings=reservations, rejectReservation=rejectReservation)
+        return render_template('manageReservation.html', list=reservation_wait, bookings=reservation_accept, rejectReservation=reservation_reject)
     if request.method == 'POST':
         if click.startswith("accept-"):
             _, waiting_id, user_id, room_id, time_id = click.split('-')
+            booking = WaitingList(user_id, room_id, time_id, 'waiting')
             book_service = BookService()
-            book_service.add_new_reservation(user_id, room_id, time_id)  
-            waiting_service.delete_same_from_waiting_list(room_id, time_id)
-            waiting_service.delete_from_waiting_list(waiting_id)
+            book_service.add_new_reservation(booking)  
+            waiting_service.delete_from_waiting_list(waiting_id) 
+            
+            waiting_service.update_reject_status(room_id, time_id, 'reject')
+            # waiting_service.delete_same_from_waiting_list(room_id, time_id)
+            
             return redirect(url_for('manageReservation'))
         elif click.startswith("reject-"):
             _, waiting_id = click.split('-')
@@ -226,10 +273,11 @@ def manageRoom():
         if create == 'onclick':
             capacity = request.form.get('capacity')
             roomName = request.form.get('roomName')
+            room = Room(room_id, capacity, roomName)
             checkRoom = search_room_service.search_room_by_name(roomName)
             if len(checkRoom) > 0:
                 return render_template('manageRoom.html', rooms=rooms, error_text='This room has been created')
-            search_room_service.create_room(roomName, capacity)
+            search_room_service.create_room(room)
             return redirect(url_for('manageRoom'))
         if adminPage == 'onclick':
             return redirect(url_for('admin'))
@@ -263,11 +311,12 @@ def manageTime():
                 start = '15:00:00'
                 end = '16:59:00'
             day = request.form.get('day')
-            check_time = time_service.show_time_detail(day, start, end)
+            time = Time(time_id, start, end, day)
+            check_time = time_service.show_time_detail(time.get_day(), time.get_start_time(), time.get_end_time())
             if check_time:
                 return render_template('manageTime.html', times=times, error_text='This time has been created')
             else:
-                time_service.add_time(day, start, end)
+                time_service.add_time(time)
                 return redirect(url_for('manageTime'))
         if adminPage == 'onclick':
             return redirect(url_for('admin'))

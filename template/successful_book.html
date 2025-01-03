@@ -1,104 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            text-align: center;
-        }
-        table {
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-        }
-        #cancel {
-            background-color: red;
-        }
-        #back{
-            background-color: darkblue;
-        }
-    </style>
-</head>
-<body>
-    <form action="" method="post">
-        <h2>{{messages}}</h2>
-        <table>
-            <tr>
-                <th>Room name</th>
-                <th>Capacity</th>
-                <th>Date</th>
-                <th>Start time</th>
-                <th>End time</th>
-                <th></th>
-            </tr>
-            {% for i in waiting_list: %}
-            <tr>
-                <!-- <input type="hidden" name="id" value="{{i[0]}}"> -->
-                <td>{{i[1]}}</td>
-                <td>{{i[2]}}</td>
-                <td>{{i[3]}}</td>
-                <td>{{i[4]}}</td>
-                <td>{{i[5]}}</td>
-                <td>
-                    <button id="cancel" type="submit" name="click" value="cancel-{{i[0]}}" style="display: inline;">
-                        Cancel
-                    </button>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Booking List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white text-black font-sans">
+    <div class="min-h-screen flex flex-col items-center justify-center p-6">
+      <form action="" method="post" class="w-full max-w-4xl space-y-8">
+        <h2 class="text-center text-2xl font-semibold">{{messages}}</h2>
 
-        <h2>List of accepted bookings</h2>
-        <table>
-            <tr>
-                <th>Room name</th>
-                <th>Capacity</th>
-                <th>Date</th>
-                <th>Start time</th>
-                <th>End time</th>
-                <th></th>
-            </tr>
-            {% for i in booking_accept: %}
-            <tr>
-                <td>{{i[1]}}</td>
-                <td>{{i[2]}}</td>
-                <td>{{i[3]}}</td>
-                <td>{{i[4]}}</td>
-                <td>{{i[5]}}</td>
-                <td>
-                    <button id="cancel" type="submit" name="click" value="delete-{{i[0]}}" style="display: inline;">
-                        Cancel
-                    </button>
-            </tr>
-            {% endfor %}
-        </table>
-        <h2>List of denied bookings</h2>
-        <table>
-            <tr>
-                <th>Room name</th>
-                <th>Capacity</th>
-                <th>Date</th>
-                <th>Start time</th>
-                <th>End time</th>
-            </tr>
-            {% for i in booking_deny: %}
-            <tr>
-                <td>{{i[1]}}</td>
-                <td>{{i[2]}}</td>
-                <td>{{i[3]}}</td>
-                <td>{{i[4]}}</td>
-                <td>{{i[5]}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        
-        
-        <button id="back" type="submit" name="click" value="back">
-            Back to home page
-        </button>
-    </form>
-</body>
+        <!-- Waiting List Table -->
+        <div class="overflow-x-auto">
+          <h3 class="text-lg font-medium">Waiting List</h3>
+          <table class="w-full table-auto border-collapse mt-4">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 border-b">Room name</th>
+                <th class="px-4 py-2 border-b">Capacity</th>
+                <th class="px-4 py-2 border-b">Date</th>
+                <th class="px-4 py-2 border-b">Start time</th>
+                <th class="px-4 py-2 border-b">End time</th>
+                <th class="px-4 py-2 border-b"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in waiting_list: %}
+              <tr>
+                <td class="px-4 py-2 border-b">{{i.get_name_room()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_capacity()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_day()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_start()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_end()}}</td>
+                <td class="px-4 py-2 border-b">
+                  <button
+                    id="cancel"
+                    type="submit"
+                    name="click"
+                    value="cancel-{{i.get_id()}}"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition duration-300"
+                  >
+                    Cancel
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Accepted Bookings Table -->
+        <div class="overflow-x-auto mt-8">
+          <h3 class="text-lg font-medium">List of Accepted Bookings</h3>
+          <table class="w-full table-auto border-collapse mt-4">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 border-b">Room name</th>
+                <th class="px-4 py-2 border-b">Capacity</th>
+                <th class="px-4 py-2 border-b">Date</th>
+                <th class="px-4 py-2 border-b">Start time</th>
+                <th class="px-4 py-2 border-b">End time</th>
+                <th class="px-4 py-2 border-b"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in booking_accept: %}
+              <tr>
+                <td class="px-4 py-2 border-b">{{i.get_name_room()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_capacity()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_day()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_start()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_end()}}</td>
+                <td class="px-4 py-2 border-b">
+                  <button
+                    id="cancel"
+                    type="submit"
+                    name="click"
+                    value="delete-{{i.get_id()}}"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition duration-300"
+                  >
+                    Cancel
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Denied Bookings Table -->
+        <div class="overflow-x-auto mt-8">
+          <h3 class="text-lg font-medium">List of Denied Bookings</h3>
+          <table class="w-full table-auto border-collapse mt-4">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 border-b">Room name</th>
+                <th class="px-4 py-2 border-b">Capacity</th>
+                <th class="px-4 py-2 border-b">Date</th>
+                <th class="px-4 py-2 border-b">Start time</th>
+                <th class="px-4 py-2 border-b">End time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in booking_deny: %}
+              <tr>
+                <td class="px-4 py-2 border-b">{{i.get_name_room()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_capacity()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_day()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_start()}}</td>
+                <td class="px-4 py-2 border-b">{{i.get_end()}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-8 text-center">
+          <button
+            id="back"
+            type="submit"
+            name="click"
+            value="back"
+            class="px-6 py-3 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
+          >
+            Back to Home Page
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

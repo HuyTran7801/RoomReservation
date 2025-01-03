@@ -3,15 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Intro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <div>
-      <form action="" method="post">
-        <button type="submit" name="choice" value="log in">Log in</button>
-        <button type="submit" name="choice" value="sign up">Sign up</button>
-        <button type="submit" name="choice" value="admin">Admin page</button>
-      </form>
+  <body class="bg-white text-black font-sans">
+    <div class="min-h-screen flex items-center justify-center p-6">
+      <div
+        class="max-w-lg w-full p-6 bg-white border border-black rounded-lg shadow-md text-center"
+      >
+        <form action="" method="post" class="space-y-4">
+          <button
+            type="submit"
+            name="choice"
+            value="log in"
+            class="w-full px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition duration-300"
+          >
+            Log in
+          </button>
+          <button
+            type="submit"
+            name="choice"
+            value="sign up"
+            class="w-full px-6 py-3 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition duration-300"
+          >
+            Sign up
+          </button>
+          <button
+            type="submit"
+            name="choice"
+            value="admin"
+            class="w-full px-6 py-3 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition duration-300"
+          >
+            Admin page
+          </button>
+        </form>
+      </div>
     </div>
   </body>
 </html>

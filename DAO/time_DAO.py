@@ -4,14 +4,23 @@ from DAO.db_connection import DBConnection
 class TimeDAO:
     def __init__(self):
         self.__conn = DBConnection().get_connection()
-        self.cursor = self.__conn.cursor()
+        self.cursor = self.__conn.cursor(buffered=True)
         
-    def get_time_detail(self, date, start_time, end_time):
+    # def get_time_detail(self, time):
+    #     self.cursor.execute("""
+    #                         select * 
+    #                         from room_system.time t
+    #                         where t.day=%s and t.start = %s and t.end = %s
+    #                         """, (time.get_day(), time.get_start_time(), time.get_end_time()))
+        
+    #     return self.cursor.fetchone()
+    
+    def get_time_detail(self, day, start, end):
         self.cursor.execute("""
                             select * 
                             from room_system.time t
                             where t.day=%s and t.start = %s and t.end = %s
-                            """, (date, start_time, end_time))
+                            """, (day, start, end))
         
         return self.cursor.fetchone()
     
@@ -27,11 +36,11 @@ class TimeDAO:
         return self.cursor.fetchall()
     
     
-    def add_time(self, date, start_time, end_time):
+    def add_time(self, time):
         self.cursor.execute("""
                             insert into room_system.time(day, start, end)
                             values(%s, %s, %s)
-                            """, (date, start_time, end_time))
+                            """, (time.get_day(), time.get_start_time(), time.get_end_time()))
         self.__conn.commit()
 
     def delete_time(self, time_id):

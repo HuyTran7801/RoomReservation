@@ -4,7 +4,7 @@ from DAO.db_connection import DBConnection
 class RoomDAO:
     def  __init__(self):
         self.__conn = DBConnection().get_connection()
-        self.cursor = self.__conn.cursor()
+        self.cursor = self.__conn.cursor(buffered=True)
         
     def get_all_rooms(self):
         self.cursor.execute("SELECT * FROM room_system.room")
@@ -42,11 +42,11 @@ class RoomDAO:
                             WHERE id = %s
                             """, (id,))
         self.__conn.commit()
-    def create_room(self, roomName, capacity):
+    def create_room(self, room):
         self.cursor.execute("""
                             INSERT INTO room_system.room (name, capacity)
                             VALUES (%s, %s)
-                            """, (roomName, capacity))
+                            """, (room.get_name(), room.get_capacity()))
         self.__conn.commit()
     def get_room_by_name(self, name):
         self.cursor.execute("""

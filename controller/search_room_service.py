@@ -16,7 +16,7 @@ class SearchRoomService:
     
     def delete_room(self, id):
         self.__room_dao.delete_room(id)
-    def create_room(self, roomName, capacity):
-        self.__room_dao.create_room(roomName, capacity)
+    def create_room(self, room):
+        self.__room_dao.create_room(room)
     def search_room_by_name(self, name):
         return self.__room_dao.get_room_by_name(name)

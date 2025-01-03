@@ -3,49 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservation Management</title>
+    <title>Reservations Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100 min-h-screen p-4">
-    <form action="" method="post" class="space-y-6">
-      <h2 class="text-2xl font-bold text-gray-800">List of Reservations</h2>
-      <table
-        class="w-full table-auto bg-white shadow-md rounded-lg border border-gray-300"
-      >
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 text-left text-gray-700">User</th>
-            <th class="px-4 py-2 text-left text-gray-700">Mail</th>
-            <th class="px-4 py-2 text-left text-gray-700">Room</th>
-            <th class="px-4 py-2 text-left text-gray-700">Capacity</th>
-            <th class="px-4 py-2 text-left text-gray-700">Date</th>
-            <th class="px-4 py-2 text-left text-gray-700">Start Time</th>
-            <th class="px-4 py-2 text-left text-gray-700">End Time</th>
-            <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+  <body class="bg-white text-black min-h-screen p-6">
+    <form action="" method="post" class="space-y-8">
+      <h2 class="text-3xl font-semibold text-black mb-6">
+        List of Reservations
+      </h2>
+
+      <table class="w-full border-collapse border border-gray-500 text-lg">
+        <thead>
+          <tr class="bg-gray-200 text-black">
+            <th class="border border-gray-400 px-4 py-2">User</th>
+            <th class="border border-gray-400 px-4 py-2">Mail</th>
+            <th class="border border-gray-400 px-4 py-2">Room</th>
+            <th class="border border-gray-400 px-4 py-2">Capacity</th>
+            <th class="border border-gray-400 px-4 py-2">Date</th>
+            <th class="border border-gray-400 px-4 py-2">Start Time</th>
+            <th class="border border-gray-400 px-4 py-2">End Time</th>
+            <th class="border border-gray-400 px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for i in list: %}
-          <tr class="even:bg-gray-50 hover:bg-gray-100">
-            <td class="px-4 py-2">{{ i[4] }}</td>
-            <td class="px-4 py-2">{{ i[5] }}</td>
-            <td class="px-4 py-2">{{ i[6] }}</td>
-            <td class="px-4 py-2">{{ i[7] }}</td>
-            <td class="px-4 py-2">{{ i[8] }}</td>
-            <td class="px-4 py-2">{{ i[9] }}</td>
-            <td class="px-4 py-2">{{ i[10] }}</td>
-            <td class="px-4 py-2 flex justify-center gap-2">
+          <tr class="odd:bg-gray-100 even:bg-gray-200">
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_user_name()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_user_mail()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_room_name()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_capacity()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_day()}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_start()}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_end()}}</td>
+            <td class="border border-gray-400 px-4 py-2 space-x-2">
               <button
-                class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
                 name="click"
-                value="accept-{{ i[0] }}-{{ i[1] }}-{{ i[2] }}-{{ i[3] }}"
+                value="accept-{{i.get_id()}}-{{i.get_user_id()}}-{{i.get_room_id()}}-{{i.get_time_id()}}"
+                class="bg-black text-white font-bold px-4 py-2 rounded hover:bg-gray-800 transition"
               >
                 Accept
               </button>
               <button
-                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                 name="click"
-                value="reject-{{ i[0] }}"
+                value="reject-{{i.get_id()}}"
+                class="bg-red-500 text-white font-bold px-4 py-2 rounded hover:bg-red-600 transition"
               >
                 Reject
               </button>
@@ -55,39 +64,46 @@
         </tbody>
       </table>
 
-      <h2 class="text-2xl font-bold text-gray-800">
+      <h2 class="text-3xl font-semibold text-black mb-6">
         List of Successful Bookings
       </h2>
-      <table
-        class="w-full table-auto bg-white shadow-md rounded-lg border border-gray-300"
-      >
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 text-left text-gray-700">User</th>
-            <th class="px-4 py-2 text-left text-gray-700">Mail</th>
-            <th class="px-4 py-2 text-left text-gray-700">Room</th>
-            <th class="px-4 py-2 text-left text-gray-700">Capacity</th>
-            <th class="px-4 py-2 text-left text-gray-700">Date</th>
-            <th class="px-4 py-2 text-left text-gray-700">Start Time</th>
-            <th class="px-4 py-2 text-left text-gray-700">End Time</th>
-            <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+
+      <table class="w-full border-collapse border border-gray-500 text-lg">
+        <thead>
+          <tr class="bg-gray-200 text-black">
+            <th class="border border-gray-400 px-4 py-2">User</th>
+            <th class="border border-gray-400 px-4 py-2">Mail</th>
+            <th class="border border-gray-400 px-4 py-2">Room</th>
+            <th class="border border-gray-400 px-4 py-2">Capacity</th>
+            <th class="border border-gray-400 px-4 py-2">Date</th>
+            <th class="border border-gray-400 px-4 py-2">Start Time</th>
+            <th class="border border-gray-400 px-4 py-2">End Time</th>
+            <th class="border border-gray-400 px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for i in bookings: %}
-          <tr class="even:bg-gray-50 hover:bg-gray-100">
-            <td class="px-4 py-2">{{ i[4] }}</td>
-            <td class="px-4 py-2">{{ i[5] }}</td>
-            <td class="px-4 py-2">{{ i[6] }}</td>
-            <td class="px-4 py-2">{{ i[7] }}</td>
-            <td class="px-4 py-2">{{ i[8] }}</td>
-            <td class="px-4 py-2">{{ i[9] }}</td>
-            <td class="px-4 py-2">{{ i[10] }}</td>
-            <td class="px-4 py-2 flex justify-center gap-2">
+          <tr class="odd:bg-gray-100 even:bg-gray-200">
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_user_name()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_user_mail()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_room_name()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_capacity()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_day()}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_start()}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_end()}}</td>
+            <td class="border border-gray-400 px-4 py-2">
               <button
-                class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition"
                 name="click"
-                value="delete-{{ i[0] }}"
+                value="delete-{{i.get_id()}}"
+                class="bg-gray-800 text-white font-bold px-4 py-2 rounded hover:bg-gray-600 transition"
               >
                 Delete
               </button>
@@ -96,47 +112,55 @@
           {% endfor %}
         </tbody>
       </table>
+
       <button
-        class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition"
         name="click"
         value="deleteLateBookings"
+        class="bg-red-500 text-white font-bold px-6 py-3 rounded hover:bg-red-600 mt-6 transition"
       >
         Delete All Late Reservations
       </button>
 
-      <h2 class="text-2xl font-bold text-gray-800">
+      <h2 class="text-3xl font-semibold text-black mb-6">
         List of Rejected Reservations
       </h2>
-      <table
-        class="w-full table-auto bg-white shadow-md rounded-lg border border-gray-300"
-      >
-        <thead class="bg-gray-100">
-          <tr>
-            <th class="px-4 py-2 text-left text-gray-700">User</th>
-            <th class="px-4 py-2 text-left text-gray-700">Mail</th>
-            <th class="px-4 py-2 text-left text-gray-700">Room</th>
-            <th class="px-4 py-2 text-left text-gray-700">Capacity</th>
-            <th class="px-4 py-2 text-left text-gray-700">Date</th>
-            <th class="px-4 py-2 text-left text-gray-700">Start Time</th>
-            <th class="px-4 py-2 text-left text-gray-700">End Time</th>
-            <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+
+      <table class="w-full border-collapse border border-gray-500 text-lg">
+        <thead>
+          <tr class="bg-gray-200 text-black">
+            <th class="border border-gray-400 px-4 py-2">User</th>
+            <th class="border border-gray-400 px-4 py-2">Mail</th>
+            <th class="border border-gray-400 px-4 py-2">Room</th>
+            <th class="border border-gray-400 px-4 py-2">Capacity</th>
+            <th class="border border-gray-400 px-4 py-2">Date</th>
+            <th class="border border-gray-400 px-4 py-2">Start Time</th>
+            <th class="border border-gray-400 px-4 py-2">End Time</th>
+            <th class="border border-gray-400 px-4 py-2">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for i in rejectReservation: %}
-          <tr class="even:bg-gray-50 hover:bg-gray-100">
-            <td class="px-4 py-2">{{ i[1] }}</td>
-            <td class="px-4 py-2">{{ i[2] }}</td>
-            <td class="px-4 py-2">{{ i[3] }}</td>
-            <td class="px-4 py-2">{{ i[4] }}</td>
-            <td class="px-4 py-2">{{ i[5] }}</td>
-            <td class="px-4 py-2">{{ i[6] }}</td>
-            <td class="px-4 py-2">{{ i[7] }}</td>
-            <td class="px-4 py-2 flex justify-center gap-2">
+          <tr class="odd:bg-gray-100 even:bg-gray-200">
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_user_name()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_user_mail()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_room_name()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">
+              {{i.get_capacity()}}
+            </td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_day()}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_start()}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{i.get_end()}}</td>
+            <td class="border border-gray-400 px-4 py-2">
               <button
-                class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition"
                 name="click"
-                value="deny-{{ i[0] }}"
+                value="deny-{{i.get_id()}}"
+                class="bg-gray-800 text-white font-bold px-4 py-2 rounded hover:bg-gray-600 transition"
               >
                 Delete
               </button>
@@ -146,12 +170,11 @@
         </tbody>
       </table>
 
-      <hr class="my-6 border-gray-300" />
       <button
-        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
         type="submit"
         name="click"
         value="adminPage"
+        class="bg-gray-800 text-white font-bold px-6 py-3 rounded hover:bg-gray-600 mt-8 transition"
       >
         Back to Admin Home Page
       </button>

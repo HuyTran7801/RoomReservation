@@ -9,8 +9,8 @@ class BookService:
     def show_all_reservations(self):
         return self.__reservation_dao.get_all_reservations()
     
-    def add_new_reservation(self, user_id, room_id, time_id):
-        self.__reservation_dao.add_reservation(user_id, room_id, time_id)
+    def add_new_reservation(self, booking):
+        self.__reservation_dao.add_reservation(booking)
         
         
         

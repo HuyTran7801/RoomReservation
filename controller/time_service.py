@@ -6,15 +6,13 @@ class TimeService:
     def show_all_times(self):
         return self.__time_dao.get_all_times()
         
-    def show_time_detail(self, date, start_time, end_time):
-        return self.__time_dao.get_time_detail(date, start_time, end_time)
+    def show_time_detail(self, day, start, end):
+        return self.__time_dao.get_time_detail(day, start, end)
     
     def delete_over_time(self, time_id):
         self.__time_dao.delete_over_time(time_id)
         
-    def add_time(self, date, start_time, end_time):
-        return self.__time_dao.add_time(date, start_time, end_time)
+    def add_time(self, time):
+        return self.__time_dao.add_time(time)
     def delete_time(self, time_id):
         return self.__time_dao.delete_time(time_id)
-    def find_time_id(self, date, start_time, end_time):
-        return self.__time_dao.get_time_detail(date, start_time, end_time)[0]
