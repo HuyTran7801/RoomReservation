@@ -77,9 +77,6 @@ def home():
     user_id = session.get('user_id')
     print(user_id)
     click = request.form.get('click')
-    # current =  '2025-12-31 14:00:00'
-    # current_time = datetime.datetime.now().replace(microsecond=0, second=0)
-    # print(len(rooms))
     if request.method == 'GET':
         return render_template('home.html', welcome=username, rooms=rooms)
     if request.method == 'POST':
@@ -101,17 +98,10 @@ def room_info():
     room_detail = search_room_service.search_room_detail(room_id)
     name = room_detail[1]
     capacity = room_detail[0]
-    # delete reservation has end_time < current_time
     user_id = session.get('user_id')
-    # available_times = search_room_service.show_available_times(room_id, date)
-    # session['date'] = date
-    # print('CLICK ', click)
     if request.method == 'GET':
         return render_template('room_info.html', day=date, name=name, capacity=capacity)
-        # return render_template('room_info.html', day=date, name=name, capacity=capacity, available_times=available_times)
     if request.method == 'POST':
-        # Booking here
-        # update time and insert into reservation
         if click.startswith("book-"):
             available_times = search_room_service.show_available_times(room_id, date)
             
@@ -191,7 +181,6 @@ def manageReservation():
             waiting_service.delete_from_waiting_list(waiting_id)
             return redirect(url_for('manageReservation'))
         elif click.startswith("reject-"):
-            # delete from waiting list
             _, waiting_id = click.split('-')
             waiting_service.reject_waiting_list(waiting_id)
             return redirect(url_for('manageReservation'))

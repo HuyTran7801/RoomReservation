@@ -1,79 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            text-align: center;
-        }
-        table {
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-        }
-        #delete{
-            background-color: rgb(42, 165, 110); /* Green */
-        }
-    </style>
-</head>
-<body>
-    <h1>Welcome admin</h1>
-    <div id="home-page">
-        <form action="" method="post">
-            <table>
-                <tr>
-                    <th>Start</th>
-                    <th>End</th>
-                    <th>Day</th>
-                    <th></th>
-                </tr>
-                {% for Time in times: %}
-                <tr>
-                    <td>{{Time[1]}}</td>
-                    <td >{{Time[2]}}</td>
-                    <td>{{Time[3]}}</td>
-                    <td>
-                        <button id="delete" type="submit" name="delete" value= "{{ Time[0]}}" >
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen p-6">
+    <h1 class="text-3xl font-bold text-gray-800 text-center mb-8">
+      Welcome Admin
+    </h1>
+    <div id="home-page" class="space-y-8">
+      <p class="text-red-500">{{ error_text }}</p>
+      <!-- Time Table -->
+      <form
+        action=""
+        method="post"
+        class="shadow-lg bg-white rounded-lg p-6 border border-gray-300"
+      >
+        <table class="w-full table-auto">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-2 text-left text-gray-700">Start</th>
+              <th class="px-4 py-2 text-left text-gray-700">End</th>
+              <th class="px-4 py-2 text-left text-gray-700">Day</th>
+              <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for Time in times: %}
+            <tr class="even:bg-gray-50 hover:bg-gray-100">
+              <td class="px-4 py-2">{{ Time[1] }}</td>
+              <td class="px-4 py-2">{{ Time[2] }}</td>
+              <td class="px-4 py-2">{{ Time[3] }}</td>
+              <td class="px-4 py-2 text-center">
+                <button
+                  class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                  type="submit"
+                  name="delete"
+                  value="{{ Time[0] }}"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+
+      <!-- Time Creation Form -->
+      <div class="shadow-lg bg-white rounded-lg p-6 border border-gray-300">
+        <form action="" method="POST" class="space-y-4">
+          <h2 class="text-2xl font-bold text-gray-800">Create New Time</h2>
+          <div class="space-y-2">
+            <label for="timeRoom" class="block text-gray-700">Time Frame</label>
+            <select
+              name="timeRoom"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="slot1">From 8:00 am to 09:59 am</option>
+              <option value="slot2">From 10:00 am to 11:59 am</option>
+              <option value="slot3">From 1:00 pm to 2:59 pm</option>
+              <option value="slot4">From 3:00 pm to 4:59 pm</option>
+            </select>
+          </div>
+          <div class="space-y-2">
+            <label for="day" class="block text-gray-700">Day</label>
+            <input
+              type="date"
+              name="day"
+              class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div class="flex gap-4">
+            <button
+              type="submit"
+              id="createTime"
+              name="create"
+              value="onclick"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            >
+              Create
+            </button>
+            <button
+              type="reset"
+              id="resetTime"
+              class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+            >
+              Reset
+            </button>
+          </div>
         </form>
+      </div>
 
-        <div class="form-container">
-            <form action="" method="POST" >
-                <h2>Create new Time</h2>
-                <div> </div>
-                <label for="Time">Time frame</label>
-
-                <select name="timeRoom">
-                    <option value=slot1> Form 8:00 am to 09:59 am </option>
-                    <option value=slot2> Form 10:00 am to 11:59 am </option>
-                    <option value=slot3> Form 1:00 pm to 2:59 pm </option>
-                    <option value=slot4> Form 3:00 pm to 04:59 pm </option>
-                </select>
-
-                <label for="day">Day</label>
-                <input type="date" name="day" required>
-
-                <br>
-                <button type="submit" id = "createTime" name ="create" value="onclick">Create</button>
-                <p>{{error_text}}</p>
-                <button type="reset" id="resetTime">Reset</button>
-                <br>
-                
-            </form>
-            <form action="" method="post">
-                <button type="submit" name ="adminPage" value="onclick">Comeback to admin home page</button>
-            </form>
-        </div>
-
-        
+      <!-- Admin Navigation -->
+      <form action="" method="post" class="text-center">
+        <button
+          type="submit"
+          name="adminPage"
+          value="onclick"
+          class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+        >
+          Back to Admin Home Page
+        </button>
+      </form>
     </div>
-</body>
+  </body>
 </html>

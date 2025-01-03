@@ -1,116 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        #accept{
-            background-color: green;
-        }
-        #reject{
-            background-color: red;
-        }
-    </style>
-</head>
-<body>
-    <form action="" method="post">
-        <h2>List of reservations</h2>
-        <table>
-            <tr>
-                <th>User</th>
-                <th>Mail</th>
-                <th>Room</th>
-                <th>Capacity</th>
-                <th>Date</th>
-                <th>Start time</th>
-                <th>End time</th>
-                <th></th>
-            </tr>
-            {% for i in list: %}
-            <tr>
-                <!-- <input type="hidden" name="id" value="{{ i[0] }}">
-                <input type="hidden" name="user_id" value="{{ i[1] }}">
-                <input type="hidden" name="room_id" value="{{ i[2] }}">
-                <input type="hidden" name="time_id" value="{{ i[3] }}"> -->
-                <!-- <td>{{i[0]}}</td>
-                <td>{{i[1]}}</td>
-                <td>{{i[2]}}</td>
-                <td>{{i[3]}}</td> -->
-                <td>{{i[4]}}</td>
-                <td>{{i[5]}}</td>
-                <td>{{i[6]}}</td>
-                <td>{{i[7]}}</td>
-                <td>{{i[8]}}</td>
-                <td>{{i[9]}}</td>
-                <td>{{i[10]}}</td>
-                <td>
-                    <button id="accept" name="click" value="accept-{{i[0]}}-{{i[1]}}-{{i[2]}}-{{i[3]}}">Accept</button>
-                    <button id="reject" name="click" value="reject-{{i[0]}}">Reject</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-        <h2> List of successful bookings </h2>
-        
-            <table>
-                <tr>
-                    <th>User</th>
-                    <th>Mail</th>
-                    <th>Room</th>
-                    <th>Capacity</th>
-                    <th>Date</th>
-                    <th>Start time</th>
-                    <th>End time</th>
-                    <th></th>
-                </tr>
-                {% for i in bookings: %}
-            <tr>
-                <td>{{i[4]}}</td>
-                <td>{{i[5]}}</td>
-                <td>{{i[6]}}</td>
-                <td>{{i[7]}}</td>
-                <td>{{i[8]}}</td>
-                <td>{{i[9]}}</td>
-                <td>{{i[10]}}</td>
-                <td>
-                    <button id="deleteBooking" name="click" value="delete-{{i[0]}}">Delete</button>
-                </td>
-            </tr>
-            {% endfor %}
-            </table>
-            <button id="deleteLateBookings" name="click" value="deleteLateBookings">Delete all late reservation</button>
-            <br>
-        <h2> List of rejected reservations </h2>
-        <table>
-            <tr>
-                <th>User</th>
-                <th>Mail</th>
-                <th>Room</th>
-                <th>Capacity</th>
-                <th>Date</th>
-                <th>Start time</th>
-                <th>End time</th>
-                <th></th>
-            </tr>
-            {% for i in rejectReservation: %}
-        <tr>
-            <td>{{i[1]}}</td>
-            <td>{{i[2]}}</td>
-            <td>{{i[3]}}</td>
-            <td>{{i[4]}}</td>
-            <td>{{i[5]}}</td>
-            <td>{{i[6]}}</td>
-            <td>{{i[7]}}</td>
-            <td>
-                <button id="deleteBooking" name="click" value="deny-{{i[0]}}">Delete</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reservation Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen p-4">
+    <form action="" method="post" class="space-y-6">
+      <h2 class="text-2xl font-bold text-gray-800">List of Reservations</h2>
+      <table
+        class="w-full table-auto bg-white shadow-md rounded-lg border border-gray-300"
+      >
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left text-gray-700">User</th>
+            <th class="px-4 py-2 text-left text-gray-700">Mail</th>
+            <th class="px-4 py-2 text-left text-gray-700">Room</th>
+            <th class="px-4 py-2 text-left text-gray-700">Capacity</th>
+            <th class="px-4 py-2 text-left text-gray-700">Date</th>
+            <th class="px-4 py-2 text-left text-gray-700">Start Time</th>
+            <th class="px-4 py-2 text-left text-gray-700">End Time</th>
+            <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in list: %}
+          <tr class="even:bg-gray-50 hover:bg-gray-100">
+            <td class="px-4 py-2">{{ i[4] }}</td>
+            <td class="px-4 py-2">{{ i[5] }}</td>
+            <td class="px-4 py-2">{{ i[6] }}</td>
+            <td class="px-4 py-2">{{ i[7] }}</td>
+            <td class="px-4 py-2">{{ i[8] }}</td>
+            <td class="px-4 py-2">{{ i[9] }}</td>
+            <td class="px-4 py-2">{{ i[10] }}</td>
+            <td class="px-4 py-2 flex justify-center gap-2">
+              <button
+                class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                name="click"
+                value="accept-{{ i[0] }}-{{ i[1] }}-{{ i[2] }}-{{ i[3] }}"
+              >
+                Accept
+              </button>
+              <button
+                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                name="click"
+                value="reject-{{ i[0] }}"
+              >
+                Reject
+              </button>
             </td>
-        </tr>
-        {% endfor %}
-        </table>
-        <br>    
-        <hr>
-        <button type="submit" name ="click" value="adminPage">Comeback to admin home page</button>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h2 class="text-2xl font-bold text-gray-800">
+        List of Successful Bookings
+      </h2>
+      <table
+        class="w-full table-auto bg-white shadow-md rounded-lg border border-gray-300"
+      >
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left text-gray-700">User</th>
+            <th class="px-4 py-2 text-left text-gray-700">Mail</th>
+            <th class="px-4 py-2 text-left text-gray-700">Room</th>
+            <th class="px-4 py-2 text-left text-gray-700">Capacity</th>
+            <th class="px-4 py-2 text-left text-gray-700">Date</th>
+            <th class="px-4 py-2 text-left text-gray-700">Start Time</th>
+            <th class="px-4 py-2 text-left text-gray-700">End Time</th>
+            <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in bookings: %}
+          <tr class="even:bg-gray-50 hover:bg-gray-100">
+            <td class="px-4 py-2">{{ i[4] }}</td>
+            <td class="px-4 py-2">{{ i[5] }}</td>
+            <td class="px-4 py-2">{{ i[6] }}</td>
+            <td class="px-4 py-2">{{ i[7] }}</td>
+            <td class="px-4 py-2">{{ i[8] }}</td>
+            <td class="px-4 py-2">{{ i[9] }}</td>
+            <td class="px-4 py-2">{{ i[10] }}</td>
+            <td class="px-4 py-2 flex justify-center gap-2">
+              <button
+                class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition"
+                name="click"
+                value="delete-{{ i[0] }}"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button
+        class="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600 transition"
+        name="click"
+        value="deleteLateBookings"
+      >
+        Delete All Late Reservations
+      </button>
+
+      <h2 class="text-2xl font-bold text-gray-800">
+        List of Rejected Reservations
+      </h2>
+      <table
+        class="w-full table-auto bg-white shadow-md rounded-lg border border-gray-300"
+      >
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left text-gray-700">User</th>
+            <th class="px-4 py-2 text-left text-gray-700">Mail</th>
+            <th class="px-4 py-2 text-left text-gray-700">Room</th>
+            <th class="px-4 py-2 text-left text-gray-700">Capacity</th>
+            <th class="px-4 py-2 text-left text-gray-700">Date</th>
+            <th class="px-4 py-2 text-left text-gray-700">Start Time</th>
+            <th class="px-4 py-2 text-left text-gray-700">End Time</th>
+            <th class="px-4 py-2 text-center text-gray-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in rejectReservation: %}
+          <tr class="even:bg-gray-50 hover:bg-gray-100">
+            <td class="px-4 py-2">{{ i[1] }}</td>
+            <td class="px-4 py-2">{{ i[2] }}</td>
+            <td class="px-4 py-2">{{ i[3] }}</td>
+            <td class="px-4 py-2">{{ i[4] }}</td>
+            <td class="px-4 py-2">{{ i[5] }}</td>
+            <td class="px-4 py-2">{{ i[6] }}</td>
+            <td class="px-4 py-2">{{ i[7] }}</td>
+            <td class="px-4 py-2 flex justify-center gap-2">
+              <button
+                class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition"
+                name="click"
+                value="deny-{{ i[0] }}"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <hr class="my-6 border-gray-300" />
+      <button
+        class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+        type="submit"
+        name="click"
+        value="adminPage"
+      >
+        Back to Admin Home Page
+      </button>
     </form>
-</body>
+  </body>
 </html>
