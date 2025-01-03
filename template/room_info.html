@@ -1,64 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            text-align: center;
-        }
-        table {
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-        }
-        #book, #search, #return, #waiting_list{
-            background-color: rgb(42, 165, 110); /* Green */
-        }
-    </style>
-</head>
-<body>
-    <form action="" method="post">
-        <h1>Available Time for {{name}}</h1>
-        <h2>Capacity: {{capacity}}</h2>
-        <input type="date" name="date" value="{{day}}" required>
-        <br>
-        <br>
-        <button id="search" type="submit" name="click" value="date">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white text-black font-sans">
+    <div class="min-h-screen flex flex-col items-center justify-center p-6">
+      <form action="" method="post" class="w-full max-w-4xl space-y-8">
+        <h1 class="text-center text-3xl font-semibold">
+          {{name}} - Available Time
+        </h1>
+        <h2 class="text-center text-xl">{{capacity}}</h2>
+
+        <div class="flex justify-center">
+          <input
+            type="date"
+            name="date"
+            value="{{day}}"
+            required
+            class="px-4 py-2 border rounded shadow-md focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+
+        <div class="text-center">
+          <button
+            id="search"
+            type="submit"
+            name="click"
+            value="date"
+            class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition duration-300"
+          >
             Search
-        </button>
-        <table>
-            <tr>
-                <th>Start time</th>
-                <th>End time</th>
-            </tr>
-            {% for time in available_times: %}
-                <tr>
-                    <td>
-                        <!-- <input type="hidden" name="start_time" value="{{ time[0] }}"> -->
-                        {{time[0]}}
-                    </td>
-                    <td>
-                        <!-- <input type="hidden" name="end_time" value="{{time[1]}}"> -->
-                        {{time[1]}}
-                    </td>
-                    <td>
-                        <button id="book" type="submit" name="click" value="book-{{ time[0] }}-{{ time[1] }}" style="display: inline;">
-                            Book
-                        </button>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-        <div>{{response}}</div>
-        <button id="return" type="submit" name="click" value="return" formnovalidate>
+          </button>
+        </div>
+
+        <!-- Available Times Table -->
+        <div class="overflow-x-auto mt-8">
+          <table class="w-full table-auto border-collapse text-center">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 border-b">Start time</th>
+                <th class="px-4 py-2 border-b">End time</th>
+                <th class="px-4 py-2 border-b"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for time in available_times: %}
+              <tr>
+                <td class="px-4 py-2 border-b">{{time[0]}}</td>
+                <td class="px-4 py-2 border-b">{{time[1]}}</td>
+                <td class="px-4 py-2 border-b">
+                  <button
+                    id="book"
+                    type="submit"
+                    name="click"
+                    value="book-{{ time[0] }}-{{ time[1] }}"
+                    class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition duration-300"
+                  >
+                    Book
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Response Message -->
+        <div class="text-center mt-4 text-lg font-medium">{{response}}</div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 text-center space-x-4">
+          <button
+            id="return"
+            type="submit"
+            name="click"
+            value="return"
+            formnovalidate
+            class="px-6 py-3 bg-gray-600 text-white rounded hover:bg-gray-700 transition duration-300"
+          >
             Choose another room
-        </button>
-        <button id="waiting_list" type="submit" name="click" value="waiting list" formnovalidate>
+          </button>
+          <button
+            id="waiting_list"
+            type="submit"
+            name="click"
+            value="waiting list"
+            formnovalidate
+            class="px-6 py-3 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition duration-300"
+          >
             Go to waiting list
-        </button>
-    </form>
-</body>
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

@@ -4,7 +4,7 @@ from model.user import User
 class UserDAO:
     def __init__(self):
         self.__conn = DBConnection().get_connection()
-        self.cursor = self.__conn.cursor()
+        self.cursor = self.__conn.cursor(buffered=True)
         
     def get_all_users(self):
         self.cursor.execute("SELECT * FROM room_system.user")

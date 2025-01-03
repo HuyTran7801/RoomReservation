@@ -1,17 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div>
-        <form action="" method="post">
-            <button type="submit" name="choice" value="manageRoom">Manage Room</button>
-            <button type="submit" name="choice" value="manageReservation">Manage Reservation</button>
-            <button type="submit" name="choice" value="manageTime">Manage Time</button>
-        </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-white text-black min-h-screen flex items-center justify-center"
+  >
+    <div class="bg-white p-8 rounded-lg shadow-xl w-full sm:w-96">
+      <h1 class="text-2xl font-semibold text-black text-center mb-6">
+        Admin Panel
+      </h1>
+      <form action="" method="post" class="flex flex-col gap-6">
+        <button
+          type="submit"
+          name="choice"
+          value="manageRoom"
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all transform hover:scale-105"
+        >
+          Manage Room
+        </button>
+
+        <button
+          type="submit"
+          name="choice"
+          value="manageReservation"
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all transform hover:scale-105"
+        >
+          Manage Reservation
+        </button>
+
+        <button
+          type="submit"
+          name="choice"
+          value="manageTime"
+          class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition-all transform hover:scale-105"
+        >
+          Manage Time
+        </button>
+      </form>
     </div>
-</body>
+  </body>
 </html>

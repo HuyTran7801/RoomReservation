@@ -1,7 +1,14 @@
 class Room:
-    def __init__(self, name, capacity, status):
+    def __init__(self, id, capacity, name):
+        self.__id = id
         self.__name = name
         self.__capacity = capacity
+        
+    def get_id(self):
+        return self.__id
+    
+    def set_id(self, id):
+        self.__id = id
 
     def get_name(self):
         return self.__name

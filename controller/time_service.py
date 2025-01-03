@@ -6,8 +6,8 @@ class TimeService:
     def show_all_times(self):
         return self.__time_dao.get_all_times()
         
-    def show_time_detail(self, time):
-        return self.__time_dao.get_time_detail(time)
+    def show_time_detail(self, day, start, end):
+        return self.__time_dao.get_time_detail(day, start, end)
     
     def delete_over_time(self, time_id):
         self.__time_dao.delete_over_time(time_id)

@@ -4,7 +4,7 @@ from DAO.db_connection import *
 class WaitingDAO:
     def __init__(self):
         self.__conn = DBConnection().get_connection()
-        self.cursor = self.__conn.cursor()
+        self.cursor = self.__conn.cursor(buffered=True)
     
     def add_waiting_list(self, booking):
         self.cursor.execute("""
@@ -55,7 +55,7 @@ class WaitingDAO:
         self.cursor.execute("""
                             select w.id, r.name, r.capacity, t.day, t.start, t.end
                             from room_system.waiting_list w, room_system.room r, room_system.user u, room_system.time t
-                            where u.id = %s and r.id = w.room_id and t.id = w.time_id and u.id=1 and w.Status ='reject'
+                            where u.id = %s and r.id = w.room_id and t.id = w.time_id and u.id=w.user_id and w.status ='reject'
                             """, (user_id,))
         return self.cursor.fetchall()
     def reject_waiting_list(self, id):
@@ -77,4 +77,12 @@ class WaitingDAO:
                             delete from room_system.waiting_list w
                             where w.status=%s
                             """,(status,))
+        self.__conn.commit()
+        
+    def update_reject_status(self, room_id, time_id, status):
+        self.cursor.execute("""
+                            update room_system.waiting_list w
+                            set w.status = %s
+                            where w.room_id=%s and w.time_id=%s
+                            """,(status, room_id, time_id))
         self.__conn.commit()

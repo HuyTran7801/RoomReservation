@@ -5,6 +5,7 @@ class User:
         self.__password = password
         self.__phone = phone
         
+        
     def get_name(self):
         return self.__name
     

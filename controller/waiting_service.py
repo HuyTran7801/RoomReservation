@@ -32,3 +32,6 @@ class WaitingService:
         return self.__waiting_dao.get_all_deny_list()
     def delete_waiting_list_reject(self, status):
         self.__waiting_dao.delete_status_reject(status)
+
+    def update_reject_status(self, room_id, time_id, status):
+        self.__waiting_dao.update_reject_status(room_id, time_id, status)

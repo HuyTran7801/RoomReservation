@@ -1,71 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            text-align: center;
-        }
-        table {
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-        }
-        #delete{
-            background-color: rgb(42, 165, 110); /* Green */
-        }
-    </style>
-</head>
-<body>
-    <h1>WELCOME admin</h1>
-    <div id="home-page">
-        <form action="" method="post">
-            <table>
-                <tr>
-                    <th>Capacity</th>
-                    <th>Room Name</th>
-                    <th></th>
-                </tr>
-                {% for room in rooms: %}
-                <tr>
-                    <td >{{room[1]}}</td>
-                    <td>{{room[2]}}</td>
-                    <td>
-                        <button id="delete" type="submit" name="delete" value= "{{ room[0]}}" >
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rooms Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-white text-black font-sans min-h-screen p-6">
+    <div
+      class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-300"
+    >
+      <!-- Room List -->
+      <form action="" method="post">
+        <table
+          class="w-full border-collapse border border-gray-300 text-lg mb-6"
+        >
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="px-4 py-2 border border-gray-300">Capacity</th>
+              <th class="px-4 py-2 border border-gray-300">Room Name</th>
+              <th class="px-4 py-2 border border-gray-300"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for room in rooms: %}
+            <tr class="odd:bg-gray-100 even:bg-gray-200">
+              <td class="px-4 py-2 border border-gray-300">{{ room[1] }}</td>
+              <td class="px-4 py-2 border border-gray-300">{{ room[2] }}</td>
+              <td class="px-4 py-2 border border-gray-300">
+                <button
+                  id="delete"
+                  type="submit"
+                  name="delete"
+                  value="{{ room[0] }}"
+                  class="bg-red-600 text-white font-bold py-1 px-4 rounded-md hover:bg-red-700 transition duration-300"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+
+      <!-- Create New Room Form -->
+      <div class="form-container bg-gray-200 p-6 rounded-lg shadow-md mb-6">
+        <form action="" method="POST">
+          <h2 class="text-2xl font-semibold text-black mb-4">
+            Create New Room
+          </h2>
+          <div class="mb-4">
+            <label for="capacity" class="block text-black"
+              >Capacity of Room</label
+            >
+            <input
+              type="text"
+              name="capacity"
+              required
+              class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-black"
+            />
+          </div>
+          <div class="mb-6">
+            <label for="roomName" class="block text-black">Name of Room</label>
+            <input
+              type="text"
+              name="roomName"
+              required
+              class="mt-2 w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-black focus:outline-none focus:ring-2 focus:ring-black"
+            />
+          </div>
+          <div class="flex gap-4">
+            <button
+              type="submit"
+              id="createRoom"
+              name="create"
+              value="onclick"
+              class="bg-black text-white font-bold py-2 px-4 rounded-md hover:bg-gray-700 transition duration-300"
+            >
+              Create
+            </button>
+            <button
+              type="reset"
+              id="resetRoom"
+              class="bg-gray-300 text-black font-bold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
+            >
+              Reset
+            </button>
+          </div>
+          <p class="text-red-500 text-center mb-4">{{error_text}}</p>
         </form>
+      </div>
 
-        <div class="form-container">
-            <form action="" method="POST" >
-                <h2>Create new room</h2>
-                <div> </div>
-                <label for="capacity">Capacity of room</label>
-                <input type="text" name="capacity" required>
+      <!-- Back Button -->
+      <form action="" method="post" class="text-center mt-6">
+        <button
+          type="submit"
+          name="adminPage"
+          value="onclick"
+          class="bg-gray-300 text-black font-bold py-2 px-4 rounded-md hover:bg-gray-400 transition duration-300"
+        >
+          Back to Admin Home Page
+        </button>
+      </form>
 
-                <label for="roomName">Name of room</label>
-                <input type="text" name="roomName" required>
+      <!-- Error Text -->
 
-                <br>
-                <button type="submit" id = "createRoom" name ="create" value="onclick">Create</button>
-                <button type="reset" id="resetRoom">Reset</button>
-                <br>
-                
-            </form>
-            <form action="" method="post">
-                <button type="submit" name ="adminPage" value="onclick">Comeback to admin home page</button>
-            </form>
-            <p>{{error_text}}</p>
-        </div>
-
-        
+      <script>
+        // Check if the error_text is defined and not empty
+        var error_text = "{{ error_text }}";
+        if (error_text) {
+          alert(error_text);
+        }
+      </script>
     </div>
-</body>
+  </body>
 </html>
